@@ -1,0 +1,15 @@
+.nav{
+    grid-area: n;
+    font-size: 30px;
+    background-color: cornflowerblue;
+    padding: 10px;
+  }
+
+  .item a{
+    color: white;
+    text-decoration: none;
+  }
+
+  .item a.active{
+    color: tomato;
+  }

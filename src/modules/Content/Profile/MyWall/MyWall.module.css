@@ -1,0 +1,14 @@
+
+.wall{
+    padding: 20px;
+}
+
+.wall textarea{
+    height: 60px;
+    width: 200px;
+    padding-bottom: 0px;
+}
+
+.posts{
+    padding-top: 20px;
+}

@@ -1,0 +1,8 @@
+.fromControl.error textarea,
+.fromControl.error input{
+    border: red 2px solid;
+}
+
+.fromControl.error span{
+    color: red;
+}

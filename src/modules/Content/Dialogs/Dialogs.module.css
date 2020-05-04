@@ -1,0 +1,22 @@
+.dialog_wrapper {
+    display: grid;
+    grid-template-columns: 2fr 5fr;
+}
+
+.dialogItems{
+    padding: 20px;
+}
+
+.dialogItem a {
+    font-size: 30px;
+    color: cornflowerblue;
+    text-decoration: none;
+}
+.dialogItem a.active{
+    color: rebeccapurple;
+}
+.dialog{
+    margin-top: 20px;
+    /* padding-bottom: 20px; */
+    /* margin-bottom: auto; */
+}

@@ -1,0 +1,41 @@
+  .userInfo{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .userInfo .name{
+    font-size: 25px;
+    color: rgb(39, 111, 121);
+    padding-top: 20px;
+    
+  }
+  .userInfo .contacts{
+    font-size: 20px;
+    color: rgb(39, 111, 121);
+    padding-top: 20px; 
+  }
+  .userInfo .contact{
+    font-size: 16px;
+    color: rgb(39, 111, 121);
+    padding-top: 20px; 
+  }
+  
+  .userInfo img{
+    /* height: 300px; */
+    border-radius: 80px;
+    width: 300px;
+    padding: 15px;
+  }
+
+  .editStatus{
+    border: 4px double cadetblue;
+    background: coral;
+    padding: 10px;
+    /* background-color: crimson; */
+    /* width: 80px;
+    padding: 10px;
+    border-width: 2px;
+    border: 40px;
+    background-color: crimson; */
+  }
+
