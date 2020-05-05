@@ -6,7 +6,8 @@ import { reset } from 'redux-form';
 const mapStateToProps = (state) => {
   return {
     posts:            state.profilePage.postData,
-    newMessageText:   state.profilePage.newMessageText 
+    newMessageText:   state.profilePage.newMessageText,
+    userSmallPhoto:   state.profilePage.profileData.photos.small 
   }
 }
 

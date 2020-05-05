@@ -22,7 +22,7 @@ const MyWall = (props) => {
     const onAddPost = (form) => {
         props.addPost(form.postText);
     }
-    let posts = props.posts.map(post => <Post message = {post.message} likes = {post.like} />);
+    let posts = props.posts.map(post => <Post message = {post.message} likes = {post.like} userSmallPhoto = {props.userSmallPhoto} />);
     return (
     <div className = {classes.wall}>
         <PostReduxForm onSubmit = {onAddPost} />

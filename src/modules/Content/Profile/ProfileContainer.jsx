@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Profile from './Profile';
-import { requestProfilePage, getUserStatus, updateUserStatus } from '../../../redux/profile_reducer';
+import { requestProfilePage, getUserStatus, updateUserStatus, savePhoto } from '../../../redux/profile_reducer';
 import Preloader from '../../Common/Preloader';
 import { compose } from 'redux';
 import { withAuthRedirect } from '../../../HOC/withAuthRedirect';
@@ -31,7 +31,12 @@ class ProfileContainer extends React.Component {
 
     render() {
         return <>
-            {this.props.profilePage.isFetching ? <Preloader/> : <Profile profilePage={this.props.profilePage} updateUserStatus = {this.props.updateUserStatus} />}
+            {this.props.profilePage.isFetching
+                ? <Preloader />
+                : <Profile profilePage={this.props.profilePage}
+                    updateUserStatus={this.props.updateUserStatus}
+                    isOwner = {!this.props.match.params.userId}
+                    savePhoto = {this.props.savePhoto} />}
         </>
     }
 }
@@ -44,8 +49,9 @@ const mapStateToProps = (state) => {
         isAuthRequested: getIsAuthRequested(state)
     }
 }
+
 export default compose(
-    connect(mapStateToProps, {requestProfilePage, getUserStatus, updateUserStatus}),
+    connect(mapStateToProps, {requestProfilePage, getUserStatus, updateUserStatus, savePhoto}),
     withRouter,
     withAuthRedirect
 )(ProfileContainer)

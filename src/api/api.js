@@ -18,8 +18,8 @@ class Api {
                 return response.data
             })
     }
-    put(id = null, data = null) {
-        return this.axiosInstance.put(`/${this.apiUrl}/${id}`, data)
+    put(id = null, data = null, headers = null) {
+        return this.axiosInstance.put(`/${this.apiUrl}/${id}`, data, headers)
             .then(response => {
                 return response.data
             })
@@ -51,6 +51,15 @@ followAPI.unFollow = (id) => followAPI.delete(id)
 profileAPI.getProfile   = (id)         => profileAPI.get(id)
 profileAPI.getStatus    = (id)         => profileAPI.get('status/' + id)
 profileAPI.updateStatus = (status)     => profileAPI.put('status', {status: status})
+profileAPI.updatePhoto  = (photoFile)      => {
+    const formData = new FormData()
+    formData.append("image", photoFile)
+     return profileAPI.put('photo', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
+}
 
 authAPI.getMe  = ()     => authAPI.get('me')
 authAPI.login  = (form) => authAPI.post('login', form)

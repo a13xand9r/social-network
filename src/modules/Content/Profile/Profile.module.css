@@ -27,6 +27,15 @@
     padding: 15px;
   }
 
+  .profileLargePhoto{
+    position: relative;
+  }
+  .profileLargePhoto .uploadPhotoButton{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+  }
+
   .editStatus{
     border: 4px double cadetblue;
     background: coral;

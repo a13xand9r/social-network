@@ -1,56 +1,36 @@
-import React from 'react';
-import classes from './Profile.module.css'
+import React, { useState } from 'react';
+import styles from './Profile.module.css'
 import UserPhoto from '../../../pictures/user_man.png'
-import { useState } from 'react';
-import { useEffect } from 'react';
+import UserStatus from './UserSatus';
 
 const UserInfo = (props) => {
-    let [editMode, setEditMode] = useState(false)
-    let [statusBody, changeStatusBody] = useState(props.status)
-    const activateEditMode = () => {
-        setEditMode(true)
+    let [editPhotoMode, setEditPhotoMode] = useState(false)
+    const onMainPhotoSelected = (e) => {
+        if (e.target.files.length){
+            props.savePhoto(e.target.files[0])
+        }
     }
-    const deactivateEditMode = () => {
-        setEditMode(false)
-    }
-    const onChangeStatus = (e) => {
-        changeStatusBody(e.currentTarget.value)
-    }
-    const onUpdateStatus = () => {
-        props.updateUserStatus(statusBody)
-        setEditMode(false)
-    }
-    useEffect(() => {
-        changeStatusBody(props.status)
-    }, [props.status, editMode])
     return (
-        <div className={classes.userInfo}>
-            <img alt="Картинка не грузит" src={
-                props.profileData.photos.large ? props.profileData.photos.large : UserPhoto
-            } />
+        <div className={styles.userInfo}>
+            <div className={styles.profileLargePhoto}
+                onMouseOver={() => setEditPhotoMode(true)}
+                onMouseLeave={() => setEditPhotoMode(false)}>
+                <img alt="" src={
+                    props.profileData.photos.large ? props.profileData.photos.large : UserPhoto
+                } />
+                {props.isOwner && editPhotoMode && <input type="file" className={styles.uploadPhotoButton}
+                                                                    onChange = {onMainPhotoSelected} />}
+            </div>
             <p>
-                {!editMode &&
-                    <div>
-                        <span onClick={activateEditMode}>{props.status || 'set your status'}</span>
-                    </div>
-                }
-                {editMode &&
-                    <div onMouseLeave={deactivateEditMode} className={classes.editStatus}>
-                        <div>
-                            <input onChange={onChangeStatus} autoFocus={true} value={statusBody} />
-                        </div>
-                        <div>
-                            <button onClick={onUpdateStatus}>Update status</button>
-                        </div>
-                    </div>
-                }
-                <div className={classes.name}>{props.profileData.fullName}</div>
-                <div className={classes.contacts}>{props.profileData.aboutMe}</div>
-                <div className={classes.contacts}>Contacts:</div>
-                <div className={classes.contact}>Facebook:  {props.profileData.facebook}</div>
-                <div className={classes.contact}>VK:        {props.profileData.vk}</div>
-                <div className={classes.contact}>Twitter:   {props.profileData.twitter}</div>
-                <div className={classes.contact}>Instagram: {props.profileData.instagram}</div>
+                <UserStatus status = {props.status} updateUserStatus = {props.updateUserStatus}/>
+                
+                <div className={styles.name}>{props.profileData.fullName}</div>
+                <div className={styles.contacts}>{props.profileData.aboutMe}</div>
+                <div className={styles.contacts}>Contacts:</div>
+                <div className={styles.contact}>Facebook:  {props.profileData.facebook}</div>
+                <div className={styles.contact}>VK:        {props.profileData.vk}</div>
+                <div className={styles.contact}>Twitter:   {props.profileData.twitter}</div>
+                <div className={styles.contact}>Instagram: {props.profileData.instagram}</div>
             </p>
         </div>
     );
