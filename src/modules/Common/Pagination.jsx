@@ -11,19 +11,19 @@ const Pagination = (props) => {
     let leftPositionPageNumber  = ( currentPortion - 1 ) * props.portionSize + 1
     let rightPositionPageNumber = currentPortion * props.portionSize
     let portionsCount = Math.ceil(pages.length / props.portionSize) 
-    return <div>
-            {currentPortion > 1 &&
-            <button className = {styles.paginationButton} 
-                    onClick = {() => {setCurrentPortion(currentPortion - 1)}}>prev
-            </button>}
-
-            {pages.filter((p) => (p >= leftPositionPageNumber && p <= rightPositionPageNumber)).map(p =>
-                <span className={props.currentPage === p && styles.activePage}
-                    onClick={(e) => props.getUsersOnClick(p)}>{p} </span>)}
-
-            {currentPortion < portionsCount &&
-            <button className = {styles.paginationButton} 
-                    onClick = {() => {setCurrentPortion(currentPortion + 1)}}>next
+        return <div className={styles.paginationTop}>
+                {currentPortion > 1 &&
+                        <button className={styles.paginationButtonLeft}
+                                onClick={() => { setCurrentPortion(currentPortion - 1) }}>prev
+                        </button>}
+                <div className = {styles.pageNumbers}>
+                        {pages.filter((p) => (p >= leftPositionPageNumber && p <= rightPositionPageNumber)).map(p =>
+                                <span className={props.currentPage === p && styles.activePage || styles.span}
+                                        onClick={(e) => props.getUsersOnClick(p)}>{p} </span>)}
+                </div>
+                {currentPortion < portionsCount &&
+                        <button className={styles.paginationButtonRight}
+                                onClick={() => { setCurrentPortion(currentPortion + 1) }}>next
             </button>}
         </div>
 }

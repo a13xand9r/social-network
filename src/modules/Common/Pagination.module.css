@@ -2,8 +2,27 @@
     font-weight: bold;
     color: blueviolet;
 }
-
-.paginationButton{
+.paginationTop{
+    width: 300px;
+    position: relative;
+    background-color: aqua;
+}
+.paginationTop .paginationButtonLeft{
+    position: absolute;
+    left: 0px;
     width: 40px;
     height: 40px;
+}
+.paginationTop .paginationButtonRight{
+    position: absolute;
+    right: 0px;
+    width: 40px;
+    height: 40px;
+}
+.paginationTop .pageNumbers{
+    position: absolute;
+    left: 40px;
+    right: 40px;
+}
+.span{
 }

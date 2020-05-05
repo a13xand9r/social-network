@@ -2,7 +2,11 @@
     width: 50px;
 }
 
-.activePage{
-    font-weight: bold;
-    color: blueviolet;
+
+.usersPage .pagination{
+    margin-left: 300px;
+    margin-right: 150px;
+}
+.usersPage .users{
+    top: 20px;
 }
