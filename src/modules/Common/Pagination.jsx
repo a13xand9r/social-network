@@ -18,7 +18,7 @@ const Pagination = (props) => {
                         </button>}
                 <div className = {styles.pageNumbers}>
                         {pages.filter((p) => (p >= leftPositionPageNumber && p <= rightPositionPageNumber)).map(p =>
-                                <span className={props.currentPage === p && styles.activePage || styles.span}
+                                <span className={props.currentPage === p && styles.activePage}
                                         onClick={(e) => props.getUsersOnClick(p)}>{p} </span>)}
                 </div>
                 {currentPortion < portionsCount &&
