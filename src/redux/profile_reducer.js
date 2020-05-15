@@ -1,4 +1,5 @@
 import { profileAPI } from '../api/api';
+import { stopSubmit } from 'redux-form';
 
 const ADD_POST             = 'ADD-POST';
 const SET_USER_PROFILE     = 'CHANGE-SET_USER_PROFILE-MESSAGE';
@@ -9,7 +10,14 @@ const UPDATE_PHOTO         = 'UPDATE_PHOTO';
 let initialState = {
     profileData: {
         fullName: null,
-        contacts: null,
+        contacts: {
+            github: null,
+            vk: null,
+            facebook: null,
+            instagram: null,
+            twitter: null,
+            website: null,
+        },
         photos: {
             large: null
         }
@@ -91,6 +99,8 @@ export const updateUserStatus = (statusBody) => {
         let response = await profileAPI.updateStatus(statusBody)
         if (response.resultCode === 0) {
             dispatch(setStatus(statusBody));
+        } else {
+            dispatch(stopSubmit('aboutMe', { _error: response.messages }))
         }
     }
 }
@@ -100,6 +110,14 @@ export const savePhoto = (photoFile) => {
         let response = await profileAPI.updatePhoto(photoFile)
         if (response.resultCode === 0) {
             dispatch(updatePhotoSuccess(response.data.photos));
+        }
+    }
+}
+export const updateAboutMe = (form) => {
+    return async (dispatch, getState) => {
+        let response = await profileAPI.updateAboutMe(form)
+        if (response.resultCode === 0) {
+            dispatch(requestProfilePage(getState().auth.userId));
         }
     }
 }

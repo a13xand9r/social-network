@@ -1,14 +1,16 @@
-import { authAPI } from "../api/api";
+import { authAPI, securityAPI } from "../api/api";
 import { stopSubmit } from "redux-form";
 
-const GET_AUTH       = 'ADD-GET_AUTH';
+const GET_AUTH            = 'ADD-GET_AUTH';
+const GET_CAPTCHA_SUCCESS = 'ADD-GET_CAPTCHA_SUCCESS';
 
 let initialState = {
     userId: null,
     email: null,
     login: null,
     isAuth: false,
-    isAuthRequested: false
+    isAuthRequested: false,
+    captchaUrl: null
 };
 
 const auth_reducer = (state = initialState, action) => {
@@ -18,14 +20,24 @@ const auth_reducer = (state = initialState, action) => {
                 ...state,
                 ...action.data,
                 isAuthRequested: true,
-                isAuth: action.isAuth
+                isAuth: action.isAuth,
+                captchaUrl: null
+            }
+        }
+        case GET_CAPTCHA_SUCCESS: {
+            return {
+                ...state,
+                captchaUrl: action.url
             }
         }
         default: return state;
     }
 }
 
-export const getAuthAC = (userId, email, login, isAuth) => ({ type: GET_AUTH, data: {userId, email, login}, isAuth });
+export const getAuthAC    = (userId, email, login, isAuth) => ({ 
+    type: GET_AUTH, data: {userId, email, login}, isAuth 
+});
+export const getCaptchaSuccess = (url) => ({ type: GET_CAPTCHA_SUCCESS, url});
 
 export const getAuth = () => async (dispatch) => {
     let response = await authAPI.getMe()
@@ -38,12 +50,18 @@ export const getAuth = () => async (dispatch) => {
     }
 }
 
+export const requestCaptcha = () => async (dispatch) => {
+    let response = await securityAPI.getCaptcha()
+    dispatch(getCaptchaSuccess(response.url))
+}
+
 
 export const login = (form) => async (dispatch) => {
     let response = await authAPI.login(form)
     if (response.resultCode === 0) {
         dispatch(getAuth());
     } else {
+        if ( response.resultCode === 10 ) dispatch(requestCaptcha())
         dispatch(stopSubmit('login', { _error: response.messages }))
     }
 

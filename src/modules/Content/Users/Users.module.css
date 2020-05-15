@@ -1,12 +1,17 @@
 .item img{
     width: 50px;
 }
-
-
 .usersPage .pagination{
+    margin-top: 0px;
     margin-left: 300px;
     margin-right: 150px;
 }
 .usersPage .users{
-    top: 20px;
+    margin-top: 30px;
+    margin-left: 30px;
+    /* background-color: cadetblue; */
+}
+.preloader{
+    margin-left: 5000px;
+    background-color: rgb(235, 33, 33);
 }

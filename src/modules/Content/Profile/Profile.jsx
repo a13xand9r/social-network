@@ -10,7 +10,8 @@ const Profile = (props) => {
                 status={props.profilePage.status}
                 updateUserStatus={props.updateUserStatus}
                 isOwner={props.isOwner}
-                savePhoto = {props.savePhoto} />
+                savePhoto = {props.savePhoto}
+                updateAboutMe = {props.updateAboutMe} />
             <MyWallContainer />
         </div>
     );

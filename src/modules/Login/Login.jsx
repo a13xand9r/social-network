@@ -26,7 +26,14 @@ const LoginForm = (props) => {
                 <Field name="rememberMe"
                     component={LoginInput}
                     type="checkbox" /> Remember me
-        </div>
+            </div>
+            {props.captchaUrl && <img src={props.captchaUrl} alt=""/>}
+            {props.captchaUrl && <div>
+                <Field name="captcha"
+                    component={LoginInput}
+                    placeholder="Type symbols from the pic"
+                    validate={[fieldIsRequired]} /> Remember me
+            </div>}
             {props.error && <div>
                 {props.error}
             </div>
@@ -49,13 +56,13 @@ const LoginPage = (props) => {
     }
     return <div>
         <h1>Login</h1>
-        <LoginReduxForm onSubmit = {submitForm} />
+        <LoginReduxForm onSubmit = {submitForm} captchaUrl = {props.captchaUrl} />
     </div>
 }
 
 const mapStateToProps = (state) => ({
     isAuth: state.auth.isAuth,
-    isAuthRequested: state.auth.isAuthRequested
+    captchaUrl: state.auth.captchaUrl
 })
 
 /*const mapDispatchToProps = (dispatch) => ({

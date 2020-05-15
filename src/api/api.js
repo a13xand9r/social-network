@@ -38,20 +38,25 @@ class Api {
     }
 }
 
-export let usersAPI   = new Api('users')
-export let followAPI  = new Api('follow')
-export let profileAPI = new Api('profile')
-export let authAPI    = new Api('auth')
+export let usersAPI    = new Api('users')
+export let followAPI   = new Api('follow')
+export let profileAPI  = new Api('profile')
+export let authAPI     = new Api('auth')
+export let securityAPI = new Api('security')
 
 usersAPI.getUsers = (pageNumber, usersOnPage) => usersAPI.get(`?page=${pageNumber}&count=${usersOnPage}`)
 
 followAPI.follow = (id) => followAPI.post(id)
 followAPI.unFollow = (id) => followAPI.delete(id)
 
-profileAPI.getProfile   = (id)         => profileAPI.get(id)
-profileAPI.getStatus    = (id)         => profileAPI.get('status/' + id)
-profileAPI.updateStatus = (status)     => profileAPI.put('status', {status: status})
-profileAPI.updatePhoto  = (photoFile)      => {
+profileAPI.getProfile    = (id)         => profileAPI.get(id)
+profileAPI.getStatus     = (id)         => profileAPI.get('status/' + id)
+profileAPI.updateStatus  = (status)     => profileAPI.put('status', {status: status})
+profileAPI.updateAboutMe = (form)       => profileAPI.axiosInstance.put(`/${profileAPI.apiUrl}`, form)
+    .then(response => {
+        return response.data
+    })
+profileAPI.updatePhoto   = (photoFile)      => {
     const formData = new FormData()
     formData.append("image", photoFile)
      return profileAPI.put('photo', formData, {
@@ -61,6 +66,8 @@ profileAPI.updatePhoto  = (photoFile)      => {
     })
 }
 
+securityAPI.getCaptcha = () => securityAPI.get('get-captcha-url')
+
 authAPI.getMe  = ()     => authAPI.get('me')
-authAPI.login  = (form) => authAPI.post('login', form)
 authAPI.logout = ()     => authAPI.delete('login')
+authAPI.login  = (form) => authAPI.post('login', form)

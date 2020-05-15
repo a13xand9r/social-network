@@ -10,14 +10,15 @@
     
   }
   .userInfo .contacts{
-    font-size: 20px;
-    color: rgb(39, 111, 121);
-    padding-top: 20px; 
-  }
-  .userInfo .contact{
     font-size: 16px;
     color: rgb(39, 111, 121);
-    padding-top: 20px; 
+    padding-top: 15px; 
+  }
+  .userInfo .contact{
+    font-size: 14px;
+    color: rgb(39, 111, 121);
+    padding-top: 10px; 
+    margin-left: 15px;
   }
   
   .userInfo img{
