@@ -1,8 +1,8 @@
-import React, { useState, FC } from 'react';
+import React, { useState, FC, ChangeEvent } from 'react';
 import styles from './Profile.module.css'
 import UserPhoto from '../../../pictures/user_man.png'
 import UserStatus from './UserStatus';
-import AboutMe from './AboutMe';
+import AboutMe, { AboutMeFormValuesType } from './AboutMe';
 import { ProfileDataType } from '../../../types/types';
 
 type PropsType = {
@@ -10,14 +10,14 @@ type PropsType = {
     profileData: ProfileDataType
     isOwner: boolean
     updateUserStatus: (statusBody: string) => void
-    savePhoto: (file: any) => void
-    updateAboutMe: (form: any) => void
+    savePhoto: (file: File) => void
+    updateAboutMe: (form: AboutMeFormValuesType) => void
 }
 
 const UserInfo: FC<PropsType> = (props) => {
     let [editPhotoMode, setEditPhotoMode] = useState(false)
-    const onMainPhotoSelected = (e: any) => {
-        if (e.target.files.length){
+    const onMainPhotoSelected = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files?.length){
             props.savePhoto(e.target.files[0])
         }
     }
@@ -33,7 +33,7 @@ const UserInfo: FC<PropsType> = (props) => {
                                                                     onChange = {onMainPhotoSelected} />}
             </div>
             <p>
-                <UserStatus status = {props.status} updateUserStatus = {props.updateUserStatus}/>
+                <UserStatus status = {props.status} updateUserStatus = {props.updateUserStatus} isOwner = {props.isOwner}/>
                 <div className={styles.name}>{props.profileData.fullName}</div>
 
                 <AboutMe updateAboutMe = {props.updateAboutMe} profileData = {props.profileData} isOwner ={props.isOwner}/>

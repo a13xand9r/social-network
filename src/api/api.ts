@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { UsersType, ProfileDataType } from '../types/types';
+import { LoginFormValuesType } from '../Components/Login/Login';
+import { AboutMeFormValuesType } from '../Components/Content/Profile/AboutMe';
 
 const axiosInstance = axios.create({
     baseURL: "https://social-network.samuraijs.com/api/1.0/",
@@ -9,32 +11,52 @@ const axiosInstance = axios.create({
     }
 });
 
-type getMeType = {
-    data: {
-        id: number
-        email: string
-        login: string
-    }
-    resultCode: number
+type ResponseType<D = {}, RC = number> = {
+    resultCode: RC
     messages: Array<string>
+    data: D
 }
-type getCaptchaType = {
+
+export enum LoginResultCode {
+    SuccessLogin = 0,
+    CaptchaRequired = 10
+}
+export enum AuthResultCode {
+    Success = 0,
+    Error = 10
+}
+export type GetMeResponseDataType = {
+    id: number
+    email: string
+    login: string
+}
+export type GetCaptchaType = {
     url: string
 }
-type getUsersType = {
+export type GetUsersType = {
     items: Array<UsersType>
     totalCount: number
     error: string | null
 }
-type getStatusType = string
-type getType = getMeType | getCaptchaType | getUsersType | ProfileDataType | getStatusType
+export type LoginType = {
+    resultCode: LoginResultCode
+    messages: Array<string>
+    data: {userId: number}
+}
+export type FollowType = {
+    resultCode: number
+    messages: Array<string>
+    data: object
+}
+type PostType = LoginFormValuesType | null
+//type PutType = {status: string} | {image: string} | null
 
 class Api {
     apiUrl: string;
     constructor(apiUrl: string) {
         this.apiUrl = apiUrl;
     }
-    post(id: null | string = null, data: any = null) {
+    post(id: null | string = null, data: PostType = null) {
         return axiosInstance.post(`/${this.apiUrl}/${id}`, data)
             .then(response => {
                 return response.data
@@ -46,12 +68,12 @@ class Api {
                 return response.data
             })
     }
-    get(id: string) {
-        return axiosInstance.get(`/${this.apiUrl}/${id}`)
-            .then(response => {
-                return response.data
-            })
-    }
+    // get(id: string) {
+    //     return axiosInstance.get(`/${this.apiUrl}/${id}`)
+    //         .then(response => {
+    //             return response.data
+    //         })
+    // }
     delete(id: string) {
         return axiosInstance.delete(`/${this.apiUrl}/${id}`)
             .then(response => {
@@ -59,21 +81,42 @@ class Api {
             })
     }
 
-    getMe = () => this.get('me')
-    getCaptcha = () => this.get('get-captcha-url')
+    getMe = () => axiosInstance.get<ResponseType<GetMeResponseDataType, AuthResultCode>>(`${this.apiUrl}/me`)
+        .then(response => {
+            return response.data
+        })
+    getCaptcha = () => axiosInstance.get<GetCaptchaType>(`/${this.apiUrl}/get-captcha-url`)
+        .then(response => {
+            return response.data
+        })
     logout = () => this.delete('login')
-    login = (form: any) => this.post('login', form)
-    getUsers = (pageNumber: number, usersOnPage: number) => this.get(`?page=${pageNumber}&count=${usersOnPage}`)
-    getProfile = (id: number) => this.get(id.toString())
-    getStatus = (id: number) => this.get('status/' + id.toString())
-    follow = (id: number) => this.post(id.toString())
+    login = (form: LoginFormValuesType) => axiosInstance.post<ResponseType<{userId: number}, LoginResultCode>>(`/${this.apiUrl}/login`, form)
+        .then(response => {
+            return response.data
+        })
+    getUsers = (pageNumber: number, usersOnPage: number) => axiosInstance.get<GetUsersType>(`/${this.apiUrl}/?page=${pageNumber}&count=${usersOnPage}`)
+        .then(response => {
+            return response.data
+        })
+    getProfile = (id: number) => axiosInstance.get<ProfileDataType>(`/${this.apiUrl}/${id.toString()}`)
+        .then(response => {
+            return response.data
+        })
+    getStatus = (id: number) => axiosInstance.get<string>(`/${this.apiUrl}/status/${id.toString()}`)
+        .then(response => {
+            return response.data
+        })
+    follow = (id: number) => axiosInstance.post(`/${this.apiUrl}/${id.toString()}`)
+        .then(response => {
+            return response.data
+        })
     unFollow = (id: number) => this.delete(id.toString())
-    updateAboutMe = (form: any) => this.put(`/${profileAPI.apiUrl}`, form)
+    updateAboutMe = (form: AboutMeFormValuesType) => axiosInstance.put(`/${profileAPI.apiUrl}`, form)
         .then(response => {
             return response.data
         })
     updateStatus = (status: string) => this.put('status', { status: status })
-    updatePhoto = (photoFile: any) => {
+    updatePhoto = (photoFile: File) => {
         const formData = new FormData()
         formData.append("image", photoFile)
         return this.put('photo', formData, {

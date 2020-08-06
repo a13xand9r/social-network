@@ -1,10 +1,11 @@
 import React, { useState, FC } from 'react';
 import styles from './Profile.module.css'
-import { reduxForm, Field } from 'redux-form';
-import { ProfileDataType } from '../../../types/types';
+import { reduxForm, Field, InjectedFormProps } from 'redux-form';
+import { ProfileDataType, ContactsType } from '../../../types/types';
 
+type FormPropsType = InjectedFormProps<AboutMeFormValuesType, {initialValues: ProfileDataType}> & {initialValues: ProfileDataType}
 
-const AboutMeEditForm = (props: any) => {
+const AboutMeEditForm: FC<FormPropsType> = (props) => {
     return (
         <form onSubmit = {props.handleSubmit}>
             <button>Save</button>
@@ -26,20 +27,27 @@ const AboutMeEditForm = (props: any) => {
     )
 }
 
-const AboutMeReduxForm = reduxForm({
+const AboutMeReduxForm = reduxForm<AboutMeFormValuesType, {initialValues: ProfileDataType}>({
     form: 'aboutMe'
 })(AboutMeEditForm)
+
+export type AboutMeFormValuesType = {
+    aboutMe: string
+    lookingForAJob: boolean
+    lookingForAJobDescription: string
+    contacts: ContactsType
+}
 
 type PropsType = {
     profileData: ProfileDataType
     isOwner: boolean
-    updateAboutMe: (form: any) => void
+    updateAboutMe: (form: AboutMeFormValuesType) => void
 }
 
 const AboutMe: FC<PropsType> = (props) => {
     let [editMode, setEditMode] = useState(false)
     let [showEditButton, setShowEditButton] = useState(false)
-    const onSaveForm = (form: any) => {
+    const onSaveForm = (form: AboutMeFormValuesType) => {
         props.updateAboutMe(form)
         setEditMode(false)
     }
@@ -57,7 +65,7 @@ const AboutMe: FC<PropsType> = (props) => {
 
                     <div className={styles.contacts}><b>Contacts:</b></div>
                     <div>
-                        {(Object.keys(props.profileData.contacts) as Array<keyof typeof props.profileData.contacts>).map((key) => {     
+                        {(Object.keys(props.profileData.contacts) as Array<keyof ContactsType>).map((key) => {     
                             props.profileData.contacts[key] && contactsCnt++
                             return props.profileData.contacts[key] !== null 
                             && <div className={styles.contact}><b>{key}:</b>

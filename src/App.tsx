@@ -1,16 +1,18 @@
 import React from 'react';
 import classes from './App.module.css';
-import Nav from './modules/Navbar/nav';
+import Nav from './Components/Navbar/nav';
 import { Route } from 'react-router-dom';
-import DialogsContainer from './modules/Content/Dialogs/DialogsContainer';
-import UsersContainer from './modules/Content/Users/UsersContainer';
-import ProfileContainer from './modules/Content/Profile/ProfileContainer';
-import HeaderContainer from './modules/Header/HeaderContainer';
-import LoginPage from './modules/Login/Login';
+import DialogsContainer from './Components/Content/Dialogs/DialogsContainer';
+import UsersContainer from './Components/Content/Users/UsersContainer';
+import ProfileContainer from './Components/Content/Profile/ProfileContainer';
+import HeaderContainer from './Components/Header/HeaderContainer';
+import LoginPage from './Components/Login/Login';
 import { connect, ConnectedProps } from 'react-redux';
 import { initialApp } from './redux/initial_reducer';
-import Preloader from './modules/Common/Preloader';
+import Preloader from './Components/Common/Preloader';
 import { AppStateType } from './redux/redux_store';
+import { Dispatch } from 'redux';
+//import { Dispatch } from 'redux';
 
 class App extends React.Component<PropsType> {
   componentDidMount() {
@@ -42,7 +44,7 @@ const mapStateToProps = (state: AppStateType) => ({
 const connector = connect(mapStateToProps,{initialApp})
 type PropsType = ConnectedProps<typeof connector> & {
   state: AppStateType
-  dispatch: any
+  dispatch: Dispatch
 }
 
 export default connector(App)

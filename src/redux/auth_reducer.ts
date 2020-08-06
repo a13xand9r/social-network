@@ -1,10 +1,8 @@
+import { LoginResultCode, AuthResultCode, profileAPI } from './../api/api';
 import { authAPI, securityAPI } from "../api/api";
 import { stopSubmit, FormAction } from "redux-form";
-import { ThunkAction } from "redux-thunk";
-import { AppStateType } from "./redux_store";
-
-const GET_AUTH            = 'ADD-GET_AUTH';
-const GET_CAPTCHA_SUCCESS = 'ADD-GET_CAPTCHA_SUCCESS';
+import { InferActionType, BaseThunkType } from "./redux_store";
+import { LoginFormValuesType } from '../Components/Login/Login';
 
 let initialState = {
     userId: null as number | null,
@@ -12,23 +10,23 @@ let initialState = {
     login: null as string | null,
     isAuth: false,
     isAuthRequested: false,
-    captchaUrl: null as string | null
+    captchaUrl: null as string | null,
+    smallPhoto: null as string |null
 };
-
-export type InitialStateType = typeof initialState
 
 const auth_reducer = (state = initialState, action: ActionsType): InitialStateType => {
     switch(action.type){
-        case GET_AUTH: {
+        case 'AUTH_GET_AUTH': {
             return {
                 ...state,
                 ...action.data,
                 isAuthRequested: true,
                 isAuth: action.isAuth,
-                captchaUrl: null
+                captchaUrl: null,
+                smallPhoto: action.photo
             }
         }
-        case GET_CAPTCHA_SUCCESS: {
+        case 'AUTH_GET_CAPTCHA_SUCCESS': {
             return {
                 ...state,
                 captchaUrl: action.url
@@ -38,53 +36,49 @@ const auth_reducer = (state = initialState, action: ActionsType): InitialStateTy
     }
 }
 
-type ActionsType = GetAuthActionType | getCaptchaActionType 
-type GetAuthActionType = {
-    type: typeof GET_AUTH
-    data: {userId: null | number, email: string | null, login: string | null}
-    isAuth: boolean
+export const actions = {
+    getAuth: (userId: number | null, email: string | null, login: string | null, isAuth: boolean, photo: string | null) => ({
+        type: 'AUTH_GET_AUTH', data: { userId, email, login }, isAuth, photo
+    } as const),
+    getCaptchaSuccess: (url: string) => ({ type: 'AUTH_GET_CAPTCHA_SUCCESS', url } as const)
 }
-export const getAuthAC    = (userId: number | null, email: string | null, login: string | null, isAuth: boolean): GetAuthActionType => ({ 
-    type: GET_AUTH, data: {userId, email, login}, isAuth 
-});
-type getCaptchaActionType = {
-    type: typeof GET_CAPTCHA_SUCCESS
-    url: string
-}
-export const getCaptchaSuccess = (url: string): getCaptchaActionType => ({ type: GET_CAPTCHA_SUCCESS, url});
 
-type ThunkType = ThunkAction<void, AppStateType, unknown, ActionsType | FormAction>
 export const getAuth = (): ThunkType => async (dispatch) => {
     let response = await authAPI.getMe()
-    if (response.resultCode === 0) {
+    if (response.resultCode === AuthResultCode.Success) {
         let { id, email, login } = response.data;
-        dispatch(getAuthAC(id, email, login, true));
+        let profileData = await profileAPI.getProfile(id)
+        dispatch(actions.getAuth(id, email, login, true, profileData.photos.small));
     } else {
         let { id, email, login } = response.data;
-        dispatch(getAuthAC(id, email, login, false));
+        dispatch(actions.getAuth(id, email, login, false, null));
     }
 }
 
 export const requestCaptcha = (): ThunkType => async (dispatch) => {
     let response = await securityAPI.getCaptcha()
-    dispatch(getCaptchaSuccess(response.url))
+    dispatch(actions.getCaptchaSuccess(response.url))
 }
 
 
-export const login = (form: any): ThunkType => async (dispatch) => {
+export const login = (form: LoginFormValuesType): ThunkType => async (dispatch) => {
     let response = await authAPI.login(form)
-    if (response.resultCode === 0) {
+    if (response.resultCode === LoginResultCode.SuccessLogin) {
         dispatch(getAuth());
     } else {
-        if ( response.resultCode === 10 ) dispatch(requestCaptcha())
+        if ( response.resultCode === LoginResultCode.CaptchaRequired ) dispatch(requestCaptcha())
         dispatch(stopSubmit('login', { _error: response.messages }))
     }
 
 }
-export const logout = () => async (dispatch: any) => {
+export const logout = (): ThunkType => async (dispatch) => {
     await authAPI.logout()
-    dispatch(getAuthAC(null, null, null, false));
+    dispatch(actions.getAuth(null, null, null, false, null));
 
 }
 
 export default auth_reducer
+
+export type InitialStateType = typeof initialState
+type ActionsType = InferActionType<typeof actions>
+type ThunkType = BaseThunkType<ActionsType | FormAction>

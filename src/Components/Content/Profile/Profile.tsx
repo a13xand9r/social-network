@@ -3,12 +3,13 @@ import classes from './Profile.module.css'
 import MyWallContainer from './MyWall/MyWallContainer';
 import UserInfo from './UserInfo';
 import { ProfilePageStateType } from '../../../redux/profile_reducer';
+import { AboutMeFormValuesType } from './AboutMe';
 
 type PropsType = {
     profilePage: ProfilePageStateType
     isOwner: boolean
-    updateAboutMe: (form: any) => void
-    savePhoto: (photoFile: any) => void
+    updateAboutMe: (form: AboutMeFormValuesType) => void
+    savePhoto: (photoFile: File) => void
     updateUserStatus: (statusBody: string) => void
 }
 

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styles from './Dialogs.module.css'
 import {NavLink} from "react-router-dom";
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import { fieldIsRequired, fieldIsFullCreator } from '../../../validation/validation';
 import { DialogsTextArea } from '../../Common/FormComponents';
 import { DialogsInitialStateType } from '../../../redux/dialogs_reducer';
@@ -12,7 +12,7 @@ type MessageTextFormPropsType = {
     handleSubmit: () => void
 }
 
-const MessageTextForm = (props: any) => {
+const MessageTextForm: FC<InjectedFormProps<MessageFormValuesType>> = (props) => {
     return (
         <form onSubmit = {props.handleSubmit}>
             <Field name = "messageBody"
@@ -24,11 +24,14 @@ const MessageTextForm = (props: any) => {
     )
 }
 
-const MessageReduxForm = reduxForm({ form: 'dialogMessage' })(MessageTextForm)
+const MessageReduxForm = reduxForm<MessageFormValuesType>({ form: 'dialogMessage' })(MessageTextForm)
 
 type DialogItemPropsType = {
     path: string
     name: string
+}
+export type MessageFormValuesType = {
+    messageBody: string
 }
 
 const DialogItem: FC<DialogItemPropsType> = (props) => {
@@ -63,7 +66,7 @@ type DialogsPropsType = {
 
 const Dialogs: FC<DialogsPropsType> = (props) => {
     
-    let onSendMessage = (form: any) => {
+    let onSendMessage = (form: MessageFormValuesType) => {
         props.sendMessage(form.messageBody);
     }
    

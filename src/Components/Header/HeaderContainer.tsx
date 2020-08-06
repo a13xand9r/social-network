@@ -7,7 +7,8 @@ const mapStateToProps = (state: AppStateType) => ({
     login:  state.auth.login,
     userId: state.auth.userId,
     email:  state.auth.email,
-    isAuth:  state.auth.isAuth
+    isAuth:  state.auth.isAuth,
+    userSmallPhoto:  state.auth.smallPhoto
 })
 
 const connector = connect(mapStateToProps, {getAuth, logout});

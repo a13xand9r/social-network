@@ -31,7 +31,9 @@ export type UsersType = {
     followed: boolean
 }
 export type PostDataType = {
-    id: string
+    id: number
     message: string
-    like: string
+    likes: number
+    iLike: boolean
+    authorId: null | number
 }

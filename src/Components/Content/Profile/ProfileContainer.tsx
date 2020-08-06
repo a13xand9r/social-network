@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Profile from './Profile';
 import { requestProfilePage, getUserStatus, updateUserStatus, savePhoto, updateAboutMe } from '../../../redux/profile_reducer';
 import Preloader from '../../Common/Preloader';
@@ -19,28 +19,34 @@ const mapStateToProps = (state: AppStateType) => {
     }
 }
 
+type PathParamsType = {
+    userId: string,
+}
+
 const connector = connect(mapStateToProps, {requestProfilePage, getUserStatus, updateUserStatus, savePhoto, updateAboutMe})
 type PropsFromRedux = ConnectedProps<typeof connector>
-type PropsType = PropsFromRedux & {match: any}
+type PropsType = PropsFromRedux & RouteComponentProps<PathParamsType>
+
 
 class ProfileContainer extends React.Component<PropsType> {
     componentDidMount() {
-        if (this.props.isAuth /*&& this.props.authId !== null*/) {
+        if (this.props.isAuth && this.props.authId !== null) {
             this.props.requestProfilePage(this.props.match.params.userId
-                ? this.props.match.params.userId
+                ? +this.props.match.params.userId
                 : this.props.authId)
             this.props.getUserStatus(this.props.match.params.userId
-                ? this.props.match.params.userId
+                ? +this.props.match.params.userId
                 : this.props.authId)
         } else if (this.props.match.params.userId) {
-            this.props.requestProfilePage(this.props.match.params.userId)
-            this.props.getUserStatus(this.props.match.params.userId)
+            this.props.requestProfilePage(+this.props.match.params.userId)
+            this.props.getUserStatus(+this.props.match.params.userId)
         }
     }
     
     componentDidUpdate(prevProps: PropsType) {
         if (prevProps.match.params.userId !== this.props.match.params.userId && !this.props.match.params.userId && this.props.authId !== null) {
             this.props.requestProfilePage(this.props.authId)
+            this.props.getUserStatus(this.props.authId)
         }
     }
 
@@ -57,8 +63,8 @@ class ProfileContainer extends React.Component<PropsType> {
     }
 }
 
-export default compose(
+export default compose<React.ComponentType>(
     connector,
     withRouter,
     withAuthRedirect
-)(ProfileContainer) as React.ComponentType
+)(ProfileContainer)

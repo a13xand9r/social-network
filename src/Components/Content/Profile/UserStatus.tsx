@@ -6,13 +6,14 @@ import { useEffect } from 'react';
 type PropsType = {
     status: string
     updateUserStatus: (statusBody: string) => void
+    isOwner: boolean
 }
 
 const UserStatus: FC<PropsType> = (props) => {
     let [editMode, setEditMode] = useState(false)
     let [statusBody, changeStatusBody] = useState<string>(props.status)
     const activateEditMode = () => {
-        setEditMode(true)
+        if (props.isOwner) setEditMode(true)
     }
     const deactivateEditMode = () => {
         setEditMode(false)
