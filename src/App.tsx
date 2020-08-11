@@ -3,7 +3,7 @@ import classes from './App.module.css';
 import Nav from './Components/Navbar/nav';
 import { Route } from 'react-router-dom';
 import DialogsContainer from './Components/Content/Dialogs/DialogsContainer';
-import UsersContainer from './Components/Content/Users/UsersContainer';
+import UsersContainer from './Components/Content/Users/Users';
 import ProfileContainer from './Components/Content/Profile/ProfileContainer';
 import HeaderContainer from './Components/Header/HeaderContainer';
 import LoginPage from './Components/Login/Login';
@@ -27,7 +27,8 @@ class App extends React.Component<PropsType> {
           <Nav />
           <div className={classes.app_wrapper_content}>
             <Route path='/dialogs' render={() => <DialogsContainer />} />
-            <Route path='/users' render={() => <UsersContainer />} />
+            <Route path='/users/:pageNumber?' render={() => <UsersContainer />} />
+            <Route path='/friends/:pageNumber?' render={() => <UsersContainer  />} />
             <Route path='/profile/:userId?' render={() => <ProfileContainer />} />
             <Route path='/login' render={() => <LoginPage />} />
           </div>

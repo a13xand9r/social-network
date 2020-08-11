@@ -1,7 +1,7 @@
 import React, { useState, FC, ChangeEvent } from 'react';
 import styles from './Profile.module.css'
 import UserPhoto from '../../../pictures/user_man.png'
-import UserStatus from './UserStatus';
+import UserStatus from './ProfileStatus';
 import AboutMe, { AboutMeFormValuesType } from './AboutMe';
 import { ProfileDataType } from '../../../types/types';
 

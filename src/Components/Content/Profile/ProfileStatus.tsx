@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ChangeEvent } from 'react';
 import styles from './Profile.module.css'
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -18,7 +18,7 @@ const UserStatus: FC<PropsType> = (props) => {
     const deactivateEditMode = () => {
         setEditMode(false)
     }
-    const onChangeStatus = (e: any) => {
+    const onChangeStatus = (e: ChangeEvent<HTMLInputElement>) => {
         changeStatusBody(e.currentTarget.value)
     }
     const onUpdateStatus = () => {

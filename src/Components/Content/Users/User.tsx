@@ -6,17 +6,23 @@ import { UsersType } from '../../../types/types';
 
 type PropsType = {
     user: UsersType
+    searchText: string | null
+    isTermSearch: boolean
     FetchingFollowDisable: Array<number>
     followUnFollow: (userId: number, followed: boolean) => void
 }
 
-const User: React.FC<PropsType> = ({ user, FetchingFollowDisable, followUnFollow }) => {
-
+const User: React.FC<PropsType> = ({ user, searchText, isTermSearch, FetchingFollowDisable, followUnFollow }) => {
+    let termIndex: number
+    if (searchText !== null) termIndex = user.name.indexOf(searchText)
     return <div className={styles.item} >
         <NavLink to={'/profile/' + user.id} >
             <img src={user.photos.small === null ? user_man : user.photos.small} alt="No" />
         </NavLink>
-        {user.name}
+        { (searchText !== null && isTermSearch) ? user.name.split('').map((el, i) => {
+            return <span className = {(i < (searchText.length + termIndex) && i >= termIndex) ? styles.searchTerm : ''}>{el}</span>
+        }) : user.name}
+        {/* {user.name} */}
         <br />
         <button disabled={FetchingFollowDisable.some(id => id === user.id)}
             onClick={() => { followUnFollow(user.id, user.followed) }}>

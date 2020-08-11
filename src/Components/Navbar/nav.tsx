@@ -13,15 +13,19 @@ const Nav = () => {
            <NavLink to = '/friends' activeClassName = {classes.active}>My Friends</NavLink>
         </div> */}
         <div className = {classes.item}>
-           <NavLink to = '/users' activeClassName = {classes.active}>Users</NavLink>
+           <NavLink to = '/friends' activeClassName = {classes.active}>My Friends</NavLink>
         </div>
 
         <div className = {classes.item}>
-            <NavLink to = '/dialogs' activeClassName = {classes.active}>Message</NavLink>
+            <NavLink to = '/dialogs' activeClassName = {classes.active}>My Dialogs</NavLink>
         </div>
 
         <div className = {classes.item}>
             <NavLink to = '/feed' activeClassName = {classes.active}>News</NavLink>
+        </div>
+
+        <div className = {classes.item}>
+           <NavLink to = '/users' activeClassName = {classes.active}>Users</NavLink>
         </div>
         
     </nav>

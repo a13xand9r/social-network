@@ -16,7 +16,8 @@ let initialState = {
     currentPage: 1,
     totalUsers: 0,
     isFetching: false,
-    FetchingFollowDisable: [] as Array<number>
+    FetchingFollowDisable: [] as Array<number>,
+    termSearch: false
 };
 
 const users_reducer = (state = initialState, action: ActionsType): InitialStateType => {
@@ -54,6 +55,11 @@ const users_reducer = (state = initialState, action: ActionsType): InitialStateT
                 ...state,
                 currentPage: action.pageNumber
             }
+        case 'SET_TERM_SEARCH':
+            return {
+                ...state,
+                termSearch: action.term
+            }
         default: return state;
     }
 }
@@ -63,14 +69,17 @@ export const actions = {
     setUsers: (users: Array<UsersType>, totalCount: number) => ({ type: SET_USERS, users, totalCount } as const),
     toggleIsFetching: (isFetching: boolean) => ({ type: TOGGLE_IS_FETCHING, isFetching } as const),
     toggleIsFetchingFollow: (isFetching: boolean, userId: number) => ({ type: TOGGLE_IS_FETCHING_FOLLOW, isFetching, userId } as const),
-    changeCurrentPage: (pageNumber: number)  => ({type: CHANGE_CURRENT_PAGE, pageNumber} as const)
+    changeCurrentPage: (pageNumber: number)  => ({type: CHANGE_CURRENT_PAGE, pageNumber} as const),
+    setTerm: (term: boolean)  => ({type: 'SET_TERM_SEARCH', term} as const)
 }
 
-export const getUsers = (pageNumber: number, itemsOnPage: number): ThunkType => {
+export const getUsers = (pageNumber: number, itemsOnPage: number, friends: boolean = false, term: string| null = null): ThunkType => {
     return (dispatch, getState: () => AppStateType) => {
         dispatch(actions.toggleIsFetching(true));
-        usersAPI.getUsers(pageNumber, itemsOnPage)
+        if (!term) dispatch(actions.setTerm(false))
+        usersAPI.getUsers(pageNumber, itemsOnPage, friends, term)
         .then((response: GetUsersType) => {
+            if (term !== null) dispatch(actions.setTerm(true))
             dispatch(actions.setUsers(response.items, response.totalCount));
             dispatch(actions.changeCurrentPage(pageNumber));
             dispatch(actions.toggleIsFetching(false));
@@ -82,7 +91,7 @@ export const followUnFollow = (userId: number, followed: boolean): ThunkType => 
     return (dispatch, getState: () => AppStateType) => {
         dispatch(actions.toggleIsFetchingFollow(true, userId));
         if (!followed) {
-           followAPI.follow(userId)
+            followAPI.follow(userId)
                 .then((response: FollowType) => {
                     dispatch(actions.toggleIsFetchingFollow(false, userId));
                     if (response.resultCode === 0) {

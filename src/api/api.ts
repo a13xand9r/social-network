@@ -94,7 +94,8 @@ class Api {
         .then(response => {
             return response.data
         })
-    getUsers = (pageNumber: number, usersOnPage: number) => axiosInstance.get<GetUsersType>(`/${this.apiUrl}/?page=${pageNumber}&count=${usersOnPage}`)
+    getUsers = (pageNumber: number, usersOnPage: number, friends: boolean = false, term: string | null = null) => 
+        axiosInstance.get<GetUsersType>(`/${this.apiUrl}/?page=${pageNumber}&count=${usersOnPage}${friends ? '&friend=true' : ''}${term ? '&term=' + term : ''}`)
         .then(response => {
             return response.data
         })

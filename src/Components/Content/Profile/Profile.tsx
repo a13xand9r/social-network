@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import classes from './Profile.module.css'
 import MyWallContainer from './MyWall/MyWallContainer';
-import UserInfo from './UserInfo';
+import UserInfo from './ProfileInfo';
 import { ProfilePageStateType } from '../../../redux/profile_reducer';
 import { AboutMeFormValuesType } from './AboutMe';
 
