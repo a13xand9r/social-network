@@ -12,7 +12,7 @@ import { AppStateType } from '../../../redux/redux_store';
 
 const mapStateToProps = (state: AppStateType) => {
     return{
-        profilePage: getProfilePage(state), 
+        profilePage: getProfilePage(state),
         authId: getUserId(state),
         isAuth: getIsAuth(state),
         isAuthRequested: getIsAuthRequested(state)
@@ -42,7 +42,7 @@ class ProfileContainer extends React.Component<PropsType> {
             this.props.getUserStatus(+this.props.match.params.userId)
         }
     }
-    
+
     componentDidUpdate(prevProps: PropsType) {
         if (prevProps.match.params.userId !== this.props.match.params.userId && !this.props.match.params.userId && this.props.authId !== null) {
             this.props.requestProfilePage(this.props.authId)
@@ -57,7 +57,7 @@ class ProfileContainer extends React.Component<PropsType> {
                 : <Profile profilePage={this.props.profilePage}
                     updateUserStatus={this.props.updateUserStatus}
                     isOwner = {!this.props.match.params.userId}
-                    savePhoto = {this.props.savePhoto} 
+                    savePhoto = {this.props.savePhoto}
                     updateAboutMe = {this.props.updateAboutMe} />}
         </>
     }

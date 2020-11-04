@@ -13,13 +13,13 @@ type PropsType = {
 }
 
 const User: React.FC<PropsType> = ({ user, searchText, isTermSearch, FetchingFollowDisable, followUnFollow }) => {
-    let termIndex: number
-    if (searchText !== null) termIndex = user.name.indexOf(searchText)
+    let termIndex: number = -1
+    if (searchText) termIndex = user.name.indexOf(searchText)
     return <div className={styles.item} >
         <NavLink to={'/profile/' + user.id} >
             <img src={user.photos.small === null ? user_man : user.photos.small} alt="No" />
         </NavLink>
-        { (searchText !== null && isTermSearch) ? user.name.split('').map((el, i) => {
+        { (searchText && isTermSearch && termIndex !== -1) ? user.name.split('').map((el, i) => {
             return <span className = {(i < (searchText.length + termIndex) && i >= termIndex) ? styles.searchTerm : ''}>{el}</span>
         }) : user.name}
         {/* {user.name} */}

@@ -12,11 +12,12 @@ type PropsType = {
 const UserStatus: FC<PropsType> = (props) => {
     let [editMode, setEditMode] = useState(false)
     let [statusBody, changeStatusBody] = useState<string>(props.status)
+    let timeoutId: number
     const activateEditMode = () => {
         if (props.isOwner) setEditMode(true)
     }
     const deactivateEditMode = () => {
-        setEditMode(false)
+        timeoutId = setTimeout(() => setEditMode(false))
     }
     const onChangeStatus = (e: ChangeEvent<HTMLInputElement>) => {
         changeStatusBody(e.currentTarget.value)
@@ -28,6 +29,9 @@ const UserStatus: FC<PropsType> = (props) => {
     useEffect(() => {
         changeStatusBody(props.status)
     }, [props.status, editMode])
+    const onFocusHandler = () => {
+        clearTimeout(timeoutId)
+    }
     return (
         <div>
             {!editMode &&
@@ -36,7 +40,7 @@ const UserStatus: FC<PropsType> = (props) => {
                 </div>
             }
             {editMode &&
-                <div onMouseLeave={deactivateEditMode} className={styles.editStatus}>
+                <div onBlur={deactivateEditMode} onFocus={onFocusHandler} className={styles.editStatus}>
                     <div>
                         <input onChange={onChangeStatus} autoFocus={true} value={statusBody} />
                     </div>

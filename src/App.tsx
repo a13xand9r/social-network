@@ -27,8 +27,8 @@ class App extends React.Component<PropsType> {
           <Nav />
           <div className={classes.app_wrapper_content}>
             <Route path='/dialogs' render={() => <DialogsContainer />} />
-            <Route path='/users/:pageNumber?' render={() => <UsersContainer />} />
-            <Route path='/friends/:pageNumber?' render={() => <UsersContainer  />} />
+            <Route path='/users/:pageNumber?/:term?' render={() => <UsersContainer />} />
+            <Route path='/friends/:pageNumber?/:term?' render={() => <UsersContainer  />} />
             <Route path='/profile/:userId?' render={() => <ProfileContainer />} />
             <Route path='/login' render={() => <LoginPage />} />
           </div>

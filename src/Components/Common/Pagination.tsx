@@ -8,6 +8,7 @@ type PropsType = {
         portionSize: number
         currentPage: number
         path: string
+        term: string
 }
 
 const Pagination: FC<PropsType> = (props) => {
@@ -26,7 +27,7 @@ const Pagination: FC<PropsType> = (props) => {
                 </button>
                 <div className = {styles.pageNumbers}>
                 {pages.filter((p) => (p >= leftPositionPageNumber && p <= rightPositionPageNumber)).map(p =>
-                        <NavLink to = {props.path + p} className={props.currentPage === p ? styles.activePage : undefined}>
+                        <NavLink to = {`${props.path}${p}${props.term ? '/' + props.term : ''}`} className={props.currentPage === p ? styles.activePage : undefined}>
                                 {p} </NavLink>)}
                 </div>
                 <button disabled ={!(currentPortion < portionsCount)} className={styles.paginationButtonRight}
