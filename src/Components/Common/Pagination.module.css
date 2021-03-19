@@ -1,0 +1,48 @@
+.paginationTop a{
+    color: black;
+    text-decoration: none;
+    font-weight: normal;
+}
+.paginationTop a.activePage{
+    font-weight: bold;
+    color: blueviolet;
+}
+.paginationTop{
+    display: flex;
+    justify-content: space-around;
+    width: 500px;
+}
+.paginationButtonLeft{
+    outline: none;
+    background: none;
+    border: 1px rgba(0, 0, 0, 0.582) solid;
+    border-radius: 50%;
+}
+.paginationButtonLeft:hover{
+    background-color: rgba(255, 235, 205, 0.966);
+  }
+.paginationButtonLeft:active{
+    background-color:rgb(255, 235, 205);
+    border: 1px black solid;
+    border-radius: 50%;
+}
+.paginationButtonRight{
+    outline: none;
+    background: none;
+    border: 1px rgba(0, 0, 0, 0.582) solid;
+    border-radius: 50%;
+}
+.paginationButtonRight:hover{
+    background-color: rgba(255, 235, 205, 0.966);
+  }
+.paginationButtonRight:active{
+    background-color:rgb(255, 235, 205);
+    border: 1px black solid;
+    border-radius: 50%;
+}
+.pageNumbers{
+    /* position: relative; */
+    /* left: 40px; */
+}
+
+

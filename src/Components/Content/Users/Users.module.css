@@ -1,0 +1,28 @@
+.item{
+    margin-top: 10px;
+}
+.item img{
+    width: 50px;
+    border-radius: 50%;
+}
+.usersPage{
+    position: relative;
+    padding-top: 15px;
+    padding-left: 15px;
+}
+.usersPage .preloader{
+    position: absolute;
+    left: 30%;
+    top: 200px;
+}
+.usersPage .pagination{
+   padding-left: 20%;
+}
+.usersPage .users{
+    margin-top: 30px;
+    margin-left: 30px;
+    /* background-color: cadetblue; */
+}
+.item .searchTerm{
+    background-color: rgba(233, 176, 20, 0.596);
+}
