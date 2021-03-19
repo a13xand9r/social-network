@@ -20,7 +20,7 @@ const initial_reducer = (state = initialState, action: ActionsType): InitialStat
 
 export const actions = {
     initialSuccess: () => ({ type: 'INITIAL_INITIALIZE_SUCCESS' })
-} 
+}
 
 export const initialApp = (): ThunkType => {
     return async (dispatch) => {
