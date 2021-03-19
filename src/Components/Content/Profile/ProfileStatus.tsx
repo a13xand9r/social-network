@@ -40,7 +40,7 @@ const UserStatus: FC<PropsType> = (props) => {
                 </div>
             }
             {editMode &&
-                <div onBlur={deactivateEditMode} onFocus={onFocusHandler} className={styles.editStatus}>
+                <div tabIndex={0} onBlur={deactivateEditMode} onFocus={onFocusHandler} className={styles.editStatus}>
                     <div>
                         <input onChange={onChangeStatus} autoFocus={true} value={statusBody} />
                     </div>
